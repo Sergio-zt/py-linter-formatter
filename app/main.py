@@ -12,18 +12,7 @@ def format_linter_error(error: dict) -> dict:
 
 def format_single_linter_file(file_path: str, errors: list) -> dict:
     return {
-        "errors": [
-            {
-                **{new_key: error[old_key]
-                   for old_key, new_key in {"line_number": "line",
-                                            "column_number": "column",
-                                            "text": "message",
-                                            "code": "name"}.items()
-                   if old_key in error},
-                "source": "flake8"
-            }
-            for error in errors
-        ],
+        "errors": [format_linter_error(error) for error in errors],
         "path": file_path,
         "status": "failed" if errors else "passed"
     }
